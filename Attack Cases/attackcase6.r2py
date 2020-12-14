@@ -1,0 +1,33 @@
+#	ATTACK CASE 6
+#	Description: Handling reading from file with invalid offsets 
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Close file
+myfile.close()
+
+# Check if data can be read at offset greater than length of file
+try:
+	myfile = ABopenfile("attacktest.txt",False)		# Open existing file
+	myfile.readat(10,100)
+except:
+	log("Data read at offset greater than file length -- Attack Successful!\n")
+finally:
+	myfile.close()	# Close file
+
+# Check if data can be read at offset less than 0
+try:
+	myfile = ABopenfile("attacktest.txt",False)		# Open existing file
+	myfile.readat(10,-1)
+except:
+	log("Data read at offset less than 0 -- Attack Successful!\n")
+finally:
+	myfile.close()	# Close file
+

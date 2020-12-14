@@ -1,0 +1,38 @@
+#	ATTACK CASE 4
+#	Description: Handling writing to file with invalid offsets 
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Put some valid data into file
+myfile.writeat("Stest1234E",0)
+
+# Close file
+myfile.close()
+
+# Check if data can be written at offset greater than length of file
+try:
+	myfile = ABopenfile("attacktest.txt",False)		# Open existing file
+	myfile.writeat("invalidE",100)					# Write data at invalid offset
+	assert("Stest1234E" == myfile.readat(None,0))
+except:
+	log("Data written at offset greater than file length -- Attack Successful!\n")
+finally:
+	myfile.close()
+
+
+# Check if data can be written at offset less than 0
+try:
+	myfile = ABopenfile("attacktest.txt",False)		# Open existing file
+	myfile.writeat("Sinvalid",-1)					# Write data at invalid offset
+	assert("Stest1234E" == myfile.readat(None,0))
+except:
+	log("Data written at offset less than 0 -- Attack Successful!\n")
+finally:
+	myfile.close()	# Close file

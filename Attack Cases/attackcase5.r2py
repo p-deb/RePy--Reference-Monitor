@@ -1,0 +1,23 @@
+#	ATTACK CASE 5
+#	Description: Check if filename.b still exists after close() is called
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Put some valid data into file
+myfile.writeat("Stest1234E",0)
+
+# Close file
+myfile.close()
+
+# Check if filename.b still exists
+try:
+	assert("attacktest.txt.b" not in listfiles())
+except:
+	log("filename.b was not removed after file was closed -- Attack Successful!\n")

@@ -1,0 +1,37 @@
+#	ATTACK CASE 7
+#	Description: 	Create two threads and alter data of same file. 
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+
+# Define first thread operation
+def threadA():
+	myfile.writeat("Stest1234E",0)	# Write valid data to file
+
+# Define second thread operation
+def threadB():
+	myfile.writeat("Stest1234duplicateE",0)	# Write valid data to file
+	
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Execute threads
+createthread(threadA)
+createthread(threadB)
+
+myfile.close()	# Close file
+
+myfile = ABopenfile("attacktest.txt",False)	# Open the existing file
+
+# Check if data was altered by the two threads
+try:
+	assert("SE" == myfile.readat(None,0))	# File should contain backup data
+except:
+	log("Data was altered after two threads attempted to write to file concurrently -- Attack successful!\n")
+finally:
+	myfile.close()	# Close file
+
+

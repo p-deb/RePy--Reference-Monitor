@@ -1,0 +1,19 @@
+#	ATTACK CASE 8
+#	Description: Trying to open existing file with create=False
+
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Write valid data to file
+myfile.writeat("STest1234E",0)
+
+# Close file
+myfile.close()
+
+# Reopen file
+try:
+	myfile = ABopenfile("attacktest.txt",False)
+except:
+	log("Unable to open existing file -- Attack successful!")
+else:
+	myfile.close()

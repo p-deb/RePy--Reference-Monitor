@@ -1,0 +1,26 @@
+#	ATTACK CASE 2
+#	Description: Check if invalid data can be saved to file
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Write invalid data to file
+myfile.writeat("sTestinvalidE",0)
+
+# Close file
+myfile.close()
+
+# Reopen file
+myfile = ABopenfile("attacktest.txt",False)
+
+# Check if file stored invalid data
+try:
+	assert('SE' == myfile.readat(None,0))	# file saved contains valid backup file data
+except:
+	log("Invalid data written -- Attack successful!")

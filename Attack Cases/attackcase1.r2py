@@ -1,0 +1,11 @@
+#	ATTACK CASE 1
+#	Description: Check if filename with upper case characters can be saved
+
+# Create an AB file with filename including uppercase letters
+try:
+	myfile = ABopenfile("Attacktest.txt",True)
+except:
+	pass
+else:
+	myfile.close()
+	log("Invalid filename with uppercase characters saved -- Attack successful!\n")

@@ -1,0 +1,25 @@
+#	ATTACK CASE 3
+#	Description: Saving a new file with no contents written to it
+
+# Remove any previous files from earlier test runs
+if "attacktest.txt.a" in listfiles():
+  removefile("attacktest.txt.a")
+if "attacktest.txt.b" in listfiles():
+  removefile("attacktest.txt.b")
+  
+# Create an AB file
+myfile = ABopenfile("attacktest.txt",True)
+
+# Close file
+myfile.close()
+
+# Reopen existing file
+myfile = ABopenfile("attacktest.txt",False)
+
+# Check if contents of new file has valid backup data
+try:
+	assert("SE" == myfile.readat(None,0))
+except:
+	log("Valid initial backup data not written to new file -- Attack successful!")
+finally:
+	myfile.close()	# Close file
